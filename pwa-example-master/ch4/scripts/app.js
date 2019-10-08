@@ -60,9 +60,23 @@
 
   // TODO: 아래에 서비스워커 등록
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').then(() => {
+    navigator.serviceWorker.register('../service-worker.js').then(regist => {
       console.log('Service Worker Registered');
+      //만약 스크립트가 경로에 없거나 다른 문제가 발생하면 에러가 throw되므로 catch로 에러를 핸들링하시면 됩니다.
+      //(위 예제에는 catch 추가 안함, 실제 환경에서는 꼭 핸들링해주세요)
+
+      regist.addEventListener('updatefound', () => {
+        const newWorker = regist.installing;
+        console.log('Service Worker update found!');
+
+        newWorker.addEventListener('statechange', function () {
+          console.log('Service Worder state changed:', this.state);
+        })
+      })
     });
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      console.log('Controller changed')
+    })
   }
 
 })();

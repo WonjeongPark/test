@@ -2,7 +2,7 @@
  * Service Worker
  */
 
-const _version = 'v7';
+const _version = 'v5';
 const cacheName = 'v4';
 const cacheList = [
   '/',
@@ -68,3 +68,12 @@ self.addEventListener('push', event => {
 });
 
 // TODO: Notification click event
+self.addEventListener('notificationclick', function(event){
+  log('Push clicked');
+
+  event.notification.close();
+
+  event.waitUntil(
+    clients.openWindow('https://github.com/WonjeongPark/howto')
+  );
+});
